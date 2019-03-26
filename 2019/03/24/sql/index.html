@@ -16,7 +16,7 @@
 <meta property="og:description" content="HDFS使用主从架构  12345其中分为三部分NN、SNN、DNNN是主节点，也叫名称节点 SNN在主节点挂了之后起作用，也叫第二名称节点DN是从，也叫数据节点  1注: 其中圆形代表数据块1，菱形代表数据块2 1.1 NameNode1(1) NN代表文件系统的命名空间 1234567(2) 存储内容    a. 文件名称    b. 文件目录结构    c. 文件属性(包括创建时间、权限、">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/OzilMesutArs/OzilMesutArs.github.io/master/img/HDFS_Architecture/HDFS_Architecture.png">
-<meta property="og:updated_time" content="2019-03-26T11:14:17.027Z">
+<meta property="og:updated_time" content="2019-03-26T11:57:11.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HDFS">
 <meta name="twitter:description" content="HDFS使用主从架构  12345其中分为三部分NN、SNN、DNNN是主节点，也叫名称节点 SNN在主节点挂了之后起作用，也叫第二名称节点DN是从，也叫数据节点  1注: 其中圆形代表数据块1，菱形代表数据块2 1.1 NameNode1(1) NN代表文件系统的命名空间 1234567(2) 存储内容    a. 文件名称    b. 文件目录结构    c. 文件属性(包括创建时间、权限、">
@@ -190,7 +190,8 @@
 <figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(2)与NN通信: </span><br><span class="line"><span class="code">    a. 每隔3秒向master发送心跳包</span></span><br><span class="line"><span class="code">    b. 每10次发送一个blockreport</span></span><br><span class="line">(3) 主要用途</span><br><span class="line"><span class="code">    a. 文件数据块的读写</span></span><br></pre></td></tr></table></figure>
 <p>1.3 SNN<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1)SNN存储的内容:  fsimage + editlog</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(2)作用: 定期合并fsimage + editlog为新的fsimage并推送给NN，该文件被称作checkpoint</span><br></pre></td></tr></table></figure>
-<script type="math/tex; mode=display">x^{y^z}</script>
+<p>$x^y$</p>
+
       
 
       
