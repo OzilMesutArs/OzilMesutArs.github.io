@@ -6,21 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://OzilMesutArs.github.io">
-  <title>HDFS | OzilMesutArs&#39;s blog</title>
+  <title>Category: ML | OzilMesutArs&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="HDFS使用主从架构  12345其中分为三部分NN、SNN、DNNN是主节点，也叫名称节点 SNN在主节点挂了之后起作用，也叫第二名称节点DN是从，也叫数据节点  1注: 其中圆形代表数据块1，菱形代表数据块2 1.1 NameNode1(1) NN代表文件系统的命名空间 1234567(2) 存储内容    a. 文件名称    b. 文件目录结构    c. 文件属性(包括创建时间、权限、">
-<meta property="og:type" content="article">
-<meta property="og:title" content="HDFS">
-<meta property="og:url" content="http://OzilMesutArs.github.io/2019/03/24/sql/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="OzilMesutArs&#39;s blog">
+<meta property="og:url" content="http://OzilMesutArs.github.io/categories/ML/index.html">
 <meta property="og:site_name" content="OzilMesutArs&#39;s blog">
-<meta property="og:description" content="HDFS使用主从架构  12345其中分为三部分NN、SNN、DNNN是主节点，也叫名称节点 SNN在主节点挂了之后起作用，也叫第二名称节点DN是从，也叫数据节点  1注: 其中圆形代表数据块1，菱形代表数据块2 1.1 NameNode1(1) NN代表文件系统的命名空间 1234567(2) 存储内容    a. 文件名称    b. 文件目录结构    c. 文件属性(包括创建时间、权限、">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://raw.githubusercontent.com/OzilMesutArs/OzilMesutArs.github.io/master/img/HDFS_Architecture/HDFS_Architecture.png">
-<meta property="og:updated_time" content="2019-03-26T11:57:11.769Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HDFS">
-<meta name="twitter:description" content="HDFS使用主从架构  12345其中分为三部分NN、SNN、DNNN是主节点，也叫名称节点 SNN在主节点挂了之后起作用，也叫第二名称节点DN是从，也叫数据节点  1注: 其中圆形代表数据块1，菱形代表数据块2 1.1 NameNode1(1) NN代表文件系统的命名空间 1234567(2) 存储内容    a. 文件名称    b. 文件目录结构    c. 文件属性(包括创建时间、权限、">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/OzilMesutArs/OzilMesutArs.github.io/master/img/HDFS_Architecture/HDFS_Architecture.png">
+<meta name="twitter:title" content="OzilMesutArs&#39;s blog">
   
     <link rel="alternative" href="/atom.xml" title="OzilMesutArs&#39;s blog" type="application/atom+xml">
   
@@ -162,190 +156,60 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-sql" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      HDFS
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2019/03/24/ml/" class="archive-article-date">
+  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/03/24/ml/">ML simple Linear Regression</a>
     </h1>
   
 
-        
-        <a href="/2019/03/24/sql/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>HDFS使用主从架构</li>
-</ol>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">其中分为三部分</span><br><span class="line">NN、SNN、DN</span><br><span class="line">NN是主节点，也叫名称节点 </span><br><span class="line">SNN在主节点挂了之后起作用，也叫第二名称节点</span><br><span class="line">DN是从，也叫数据节点</span><br></pre></td></tr></table></figure>
-<p><img src="https://raw.githubusercontent.com/OzilMesutArs/OzilMesutArs.github.io/master/img/HDFS_Architecture/HDFS_Architecture.png" alt="avatar"></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注: 其中圆形代表数据块1，菱形代表数据块2</span><br></pre></td></tr></table></figure>
-<p>1.1 NameNode<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1) NN代表文件系统的命名空间</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(2) 存储内容</span><br><span class="line"><span class="code">    a. 文件名称</span></span><br><span class="line"><span class="code">    b. 文件目录结构</span></span><br><span class="line"><span class="code">    c. 文件属性(包括创建时间、权限、副本数)</span></span><br><span class="line"><span class="code">    d. blockmap: 文件对应的数据块与数据块分布的datanode节点一一映射关系</span></span><br><span class="line"><span class="code">       注: namenode不会持久化存储这种映射关系</span></span><br><span class="line"><span class="code">           主要靠datanode定期发送blockreport给master说明机器上存储了哪些数据块的副本，master接收信息后定期更新存储关系</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(3) NameNode主要维护的是文件的目录系统(文件系统树)，以两种文件永久保存在磁盘</span><br><span class="line"><span class="code">    &#123;</span></span><br><span class="line"><span class="code">        fsimage &lt;==&gt; 命名空间镜像文件,</span></span><br><span class="line"><span class="code">        edit    &lt;==&gt; 编辑日志</span></span><br><span class="line"><span class="code">    &#125;</span></span><br></pre></td></tr></table></figure>
-<p>1.2 DataNode</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 存储数据块和块的checksum</span><br><span class="line"><span class="code">    a. 当某一个副本的checksum不对，会复制其他的副本</span></span><br><span class="line"><span class="code">    b. 如果所有副本都错误，会在50070的web界面显示出来</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(2)与NN通信: </span><br><span class="line"><span class="code">    a. 每隔3秒向master发送心跳包</span></span><br><span class="line"><span class="code">    b. 每10次发送一个blockreport</span></span><br><span class="line">(3) 主要用途</span><br><span class="line"><span class="code">    a. 文件数据块的读写</span></span><br></pre></td></tr></table></figure>
-<p>1.3 SNN<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1)SNN存储的内容:  fsimage + editlog</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(2)作用: 定期合并fsimage + editlog为新的fsimage并推送给NN，该文件被称作checkpoint</span><br></pre></td></tr></table></figure>
-<p>$x^y$</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
+        <div class="article-info info-on-right">
+          
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        			<a href="/categories/ML//" class="article-tag-list-link color3">ML</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/2019/03/24/sql/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2019/03/24/ml/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          ML simple Linear Regression
-        
-      </div>
-    </a>
   
   
-    <a href="/2019/03/24/henry/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title"></div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -368,10 +232,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
