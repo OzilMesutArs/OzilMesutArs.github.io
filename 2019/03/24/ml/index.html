@@ -6,15 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://OzilMesutArs.github.io">
-  <title>Category: HDFS | OzilMesutArs&#39;s blog</title>
+  <title>HDFS | OzilMesutArs&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="OzilMesutArs&#39;s blog">
-<meta property="og:url" content="http://OzilMesutArs.github.io/categories/HDFS/index.html">
+  <meta name="description" content="线性回归  简单线性回归1.1 引言  上图中  样本特征是X轴，代表午饭价格，样本输出就是价格。 某点的样本特征表示为x^{(i)}其样本输出表示为 y^{(i)} 1.2 分类样本特征只有一个维度称为简单线性回归，样本特征是多个维度称为多元线性回归 1.3 简单线性回归的目的 在平面中找到这样一条直线，该直线可以拟合坐标系的点。 因为 直线方程为y=ax+b，我们将平面内的点带入直线方程可得出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HDFS">
+<meta property="og:url" content="http://OzilMesutArs.github.io/2019/03/24/ml/index.html">
 <meta property="og:site_name" content="OzilMesutArs&#39;s blog">
+<meta property="og:description" content="线性回归  简单线性回归1.1 引言  上图中  样本特征是X轴，代表午饭价格，样本输出就是价格。 某点的样本特征表示为x^{(i)}其样本输出表示为 y^{(i)} 1.2 分类样本特征只有一个维度称为简单线性回归，样本特征是多个维度称为多元线性回归 1.3 简单线性回归的目的 在平面中找到这样一条直线，该直线可以拟合坐标系的点。 因为 直线方程为y=ax+b，我们将平面内的点带入直线方程可得出">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/14542040-6d2cc560e9884442.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-03-27T03:27:36.989Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OzilMesutArs&#39;s blog">
+<meta name="twitter:title" content="HDFS">
+<meta name="twitter:description" content="线性回归  简单线性回归1.1 引言  上图中  样本特征是X轴，代表午饭价格，样本输出就是价格。 某点的样本特征表示为x^{(i)}其样本输出表示为 y^{(i)} 1.2 分类样本特征只有一个维度称为简单线性回归，样本特征是多个维度称为多元线性回归 1.3 简单线性回归的目的 在平面中找到这样一条直线，该直线可以拟合坐标系的点。 因为 直线方程为y=ax+b，我们将平面内的点带入直线方程可得出">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/14542040-6d2cc560e9884442.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
   
     <link rel="alternative" href="/atom.xml" title="OzilMesutArs&#39;s blog" type="application/atom+xml">
   
@@ -156,37 +162,97 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-ml" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/24/ml/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/24/ml/">HDFS</a>
+    <h1 class="article-title" itemprop="name">
+      HDFS
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/2019/03/24/ml/" class="archive-article-date">
+  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>线性回归</p>
+<ol>
+<li>简单线性回归<br>1.1 引言<br><img src="https://upload-images.jianshu.io/upload_images/14542040-6d2cc560e9884442.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="result.png"></li>
+</ol>
+<p>上图中 </p>
+<p>样本特征是X轴，代表午饭价格，样本输出就是价格。</p>
+<p>某点的样本特征表示为<script type="math/tex">x^{(i)}</script><br>其样本输出表示为 <script type="math/tex">y^{(i)}</script></p>
+<p>1.2 分类<br>样本特征只有一个维度称为简单线性回归，样本特征是多个维度称为多元线性回归</p>
+<p>1.3 简单线性回归的目的</p>
+<p>在平面中找到这样一条直线，该直线可以拟合坐标系的点。</p>
+<p>因为 直线方程为y=ax+b，我们将平面内的点带入直线方程可得出</p>
+<script type="math/tex; mode=display">\hat{y}^{(i)}=ax^{(i)}+b</script><p>在上式中, y的预测值就是<script type="math/tex">\hat{y}</script></p>
+<p>所以现在目标就是寻找一条直线使得$\hat{y}$与$\hat{y}$之间的差距尽可能小</p>
+<ol>
+<li>$\hat{y}$与$y^{(i)}$差距的表示</li>
+</ol>
+<p>可以使用$y^{(i)} - \hat{y}^{(i)}$来表示二者之间的差距，但是其缺点是其结果有正有负，将所有点的差距叠加，有可能导致结果为0，显然不是我们想要的。</p>
+<p>第二种方式是$\left|y^{(i)}-\hat{y}^{(i)}\right|$, 但是绝对值不是处处可导的函数，所以也被放弃</p>
+<p>第三种方式就是$\left(y^{(i)}-\hat{y}^{(i)}\right)^2$, 该方式避免了上述的缺点。</p>
+<p>现在目标变成将平面上所有的点带入第三种方式，所以函数变为<script type="math/tex">\sum_{i=1}^m\left(y^{(i)}-\hat{y}^{(i)}\right)^2</script></p>
+<ol>
+<li>新目标</li>
+</ol>
+<p>我们现在目标变为找到a和b，使得$\sum_{i=1}^m\left(y^{(i)}-\hat{y}^{(i)}\right)^2$尽可能小，目前来说完成了建模过程(找到一个模型可以最大程度的拟合数据)</p>
+<p>在简单线性回归中，该模型就是直线方程，最大程度拟合数据就是找到一个损失函数(loss function) 或者效用函数(utility function), 或者统称为目标函数(pbject function)。</p>
+<p>根据直线方程，目标函数变成<script type="math/tex">\sum_{(i=1)}^m(y^{(i)}-ax^{(i)}-b)^2</script></p>
+<ol>
+<li>如何优化</li>
+</ol>
+<p>使用最小二乘法，可以处理最小化误差的平方的问题</p>
+<p>此时<script type="math/tex">a=\frac{\sum_{j=1}^m(x^{(i)}-\bar{x})(y^{(i)}-\bar{y}) } {\sum_{(i=1)}^m(x^{(i)}-\bar{x})^2}</script></p>
+<script type="math/tex; mode=display">b=\bar{y}-a\bar{x}</script><ol>
+<li>最小二乘法</li>
+</ol>
+<p>$\sum_{(i=1)}^m(y^{(i)}-ax^{(i)}-b)^2$可以用J(a, b)表示<br>目标现在是找到a和b, 使得J(a, b)尽可能小，J(a,b)表示参数为a和b的损失函数</p>
+<p>求损失函数的最小值就是找到函数的极值, 所以J(a,b) 对参数a和b进行求导</p>
+<script type="math/tex; mode=display">\frac{\partial J(a,b)}{\partial a} = 0</script><script type="math/tex; mode=display">\frac{\partial J(a,b)}{\partial b} = 0</script><p>所以<br>$\frac{\partial J(a,b)}{\partial b}=0$</p>
+<p>$\sum_{i=1}^m 2(y^{(i)}-ax^{(i)}-b)(-1)=0$<br>$=&gt;\sum_{i=1}^m (y^{(i)}-ax^{(i)}-b)=0$<br>$=&gt;\sum_{i=1}^my^{(i)} - a\sum_{i=1}^m x^{(i)}-\sum_{i=1}^mb = 0$<br>$=&gt;\sum_{i=1}^my^{(i)} - a\sum_{i=1}^m x^{(i)}-mb=0$<br>$=&gt;mb=\sum_{i=1}^my^{(i)} - a\sum_{i=1}^m x^{(i)}$<br>(此时两边同时除以m, $\sum_{i=1}^my^{(i)}$是所有y的和，除以m就是代表均值$\bar{y}$, 对于另外一个式子同理。)<br>所以<br>$=&gt;b=\bar{y}-a\bar{x}$</p>
+<p>而对于<br>$\frac{\partial J(a,b)}{\partial a} = 0$<br>$=&gt;\sum_{i=1}^m 2(y^{(i)}-ax^{(i)}-b)(-x^{(i)})=0$<br>$=&gt;\sum_{i=1}^m (y^{(i)}-ax^{(i)}-b)x^{(i)}=0$<br>(由于$b=\bar{y}-a\bar{x}$)<br>所以<br>$=&gt;\sum_{i=1}^m (y^{(i)}-ax^{(i)}-\bar{y}+a\bar{x})x^{(i)}=0$<br>($将x^{(i)}乘进括号内$)<br>$=&gt;\sum_{i=1}^m (x^{(i)}y^{(i)}-a(x^{(i)})^2-x^{(i)}\bar{y}+a\bar{x}x^{(i)})=0$<br>$(整理一下可得到)$<br>$=&gt;\sum_{i=1}^m (x^{(i)}y^{(i)}-x^{(i)}\bar{y}-a(x^{(i)})^2+a\bar{x}x^{(i)})=0$<br>$=&gt;\sum_{i=1}^m(x^{(i)}y^{(i)}-x^{(i)}\bar{y})-\sum_{i=1}^m(a(x^{(i)})^2-a\bar{x}x^{(i)})$<br>$=&gt;\sum_{i=1}^m(x^{(i)}y^{(i)}-x^{(i)}\bar{y})-a\sum_{i=1}^m((x^{(i)})^2-\bar{x}x^{(i)})$<br>所以<br>$=&gt;a=\frac{\sum_{i=1}^m(x^{(i)}y^{(i)}-x^{(i)}\bar{y})}{\sum_{i=1}^m((x^{(i)})^2-\bar{x}x^{(i)})}$</p>
+<p>又因为y的均值$\bar{y}$是常数，所以$\sum_{i=1}^mx^{(i)}\bar{y}=\bar{y}\sum_{i=1}^mx^{(i)}$<br>又因为 $\frac{x^{(i)}}{m} = \bar{x}$, 所以$\sum_{i=1}^mx^{(i)}\bar{y}=m\bar{y}\bar{x}$=$\bar{x}\sum_{i=1}^my^{(i)}$=$\sum_{i=1}^my^{(i)}\bar{x}$<br>还因为$m\bar{x}\bar{y}$=$\sum_{i=1}^m\bar{x}\bar{y}$</p>
+<p>所以$a=\frac{\sum_{i=1}^m(x^{(i)}y^{(i)}-x^{(i)}\bar{y})}{\sum_{i=1}^m((x^{(i)})^2-\bar{x}x^{(i)})}$<br>$=&gt;\frac{\sum_{i=1}^m(x^{(i)}y^{(i)}-x^{(i)}\bar{y}-\bar{x}y^{(i)}+\bar{x}\bar{y})}{\sum_{i=1}^m((x^{(i)})^2-\bar{x}x^{(i)}-\bar{x}x^{(i)}+\bar{x}^2)}$<br>$=&gt;\frac{\sum_{i=1}^m(x^{(i)}-\bar{x})(y^{(i)}-\bar{y})}{\sum_{i=1}^m(x^{(i)}-\bar{x})^2}$</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -199,55 +265,104 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/2019/03/24/ml/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/24/sql/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/03/24/sql/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HDFS</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/24/sql/">HDFS</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -270,10 +385,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
