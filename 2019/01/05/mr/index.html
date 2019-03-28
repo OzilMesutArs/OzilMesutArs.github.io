@@ -6,16 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://OzilMesutArs.github.io">
-  <title>OzilMesutArs&#39;s blog</title>
+  <title>MapReduce | OzilMesutArs&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="OzilMesutArs&#39;s blog">
-<meta property="og:url" content="http://OzilMesutArs.github.io/2019/03/27/temp/index.html">
+  <meta name="description" content="1.MapReduce含义 1MapReduce指两个函数, 分别是Map函数和Reduce函数 1.1 Map函数1234Map函数被称为映射    过程: String ==&amp;gt; (key, value)映射的个数不会变，只是将其变成另一种形式 12Example:    abc ==&amp;gt; (abc, 1) 1.2 Reduce函数12Reduce函数被称为规约    将属于相同key">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="http://OzilMesutArs.github.io/2019/01/05/mr/index.html">
 <meta property="og:site_name" content="OzilMesutArs&#39;s blog">
+<meta property="og:description" content="1.MapReduce含义 1MapReduce指两个函数, 分别是Map函数和Reduce函数 1.1 Map函数1234Map函数被称为映射    过程: String ==&amp;gt; (key, value)映射的个数不会变，只是将其变成另一种形式 12Example:    abc ==&amp;gt; (abc, 1) 1.2 Reduce函数12Reduce函数被称为规约    将属于相同key">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-27T10:54:51.219Z">
+<meta property="og:image" content="http://ozilmesutars.github.io/img/MR.png">
+<meta property="og:updated_time" content="2019-03-28T07:23:33.993Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OzilMesutArs&#39;s blog">
+<meta name="twitter:title" content="MapReduce">
+<meta name="twitter:description" content="1.MapReduce含义 1MapReduce指两个函数, 分别是Map函数和Reduce函数 1.1 Map函数1234Map函数被称为映射    过程: String ==&amp;gt; (key, value)映射的个数不会变，只是将其变成另一种形式 12Example:    abc ==&amp;gt; (abc, 1) 1.2 Reduce函数12Reduce函数被称为规约    将属于相同key">
+<meta name="twitter:image" content="http://ozilmesutars.github.io/img/MR.png">
   
     <link rel="alternative" href="/atom.xml" title="OzilMesutArs&#39;s blog" type="application/atom+xml">
   
@@ -169,12 +174,39 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-temp" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-mr" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MapReduce
+    </h1>
+  
+
+        
+        <a href="/2019/01/05/mr/" class="archive-article-date">
+  	<time datetime="2019-01-05T18:11:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-05</time>
+</a>
+        
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>1.MapReduce含义</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MapReduce指两个函数, 分别是Map函数和Reduce函数</span><br></pre></td></tr></table></figure>
+<p>1.1 Map函数<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map函数被称为映射</span><br><span class="line"><span class="code">    过程: String ==&gt; (key, value)</span></span><br><span class="line"></span><br><span class="line">映射的个数不会变，只是将其变成另一种形式</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Example:</span><br><span class="line">    abc ==&gt; (abc, 1)</span><br></pre></td></tr></table></figure>
+<p>1.2 Reduce函数<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Reduce函数被称为规约</span><br><span class="line"><span class="code">    将属于相同key的(key, value)进行合并</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Example:</span><br><span class="line"><span class="code">    (abc, 1)</span></span><br><span class="line"><span class="code">    (abc, 1)    ==&gt;   (abc, 1+1+1)</span></span><br><span class="line"><span class="code">    (abc, 1)</span></span><br></pre></td></tr></table></figure>
+<p>2.MapReduce流程</p>
+<p>2.1 MapReduce流程图</p>
+<p><img src="/img/MR.png" alt="avatar"></p>
+<p>2.2 shuffling</p>
+<p>(1) 所处位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在map与reduce之间</span><br></pre></td></tr></table></figure></p>
+<p>(2) shuffling的意义<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shuffling就是将相同key的(key, value)放到一起</span><br><span class="line"></span><br><span class="line">从mapping到shuffling的过程中, IO是杂乱无序的, 和洗牌类似</span><br></pre></td></tr></table></figure></p>
+
       
 
       
@@ -204,6 +236,17 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MapReduce//" class="article-tag-list-link color5">MapReduce</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -253,7 +296,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/2019/03/27/temp/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/2019/01/05/mr/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -267,9 +310,18 @@
   
 <nav id="article-nav">
   
+    <a href="/2019/03/24/henry/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
   
-    <a href="/2019/03/24/commonNodeLL/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">common node of LinkedList</div>
+  
+    <a href="/2019/01/04/hdfsWrite/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HDFS写流程</div>
       <i class="icon-circle-right"></i>
     </a>
   

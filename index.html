@@ -57,6 +57,8 @@
 	        
 				<li><a href="/categories/HDFS/">HDFS</a></li>
 	        
+				<li><a href="/categories/MR">MapReduce</a></li>
+	        
 				<li><a href="/categories/ML">ML</a></li>
 	        
 				<li><a href="/categories/Leetcode">Lintcode</a></li>
@@ -121,6 +123,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -141,13 +145,15 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 20%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/HDFS/">HDFS</a></li>
+					<li style="width: 20%"><a href="/categories/HDFS/">HDFS</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/ML">ML</a></li>
+					<li style="width: 20%"><a href="/categories/MR">MapReduce</a></li>
 		        
-					<li style="width: 25%"><a href="/categories/Leetcode">Lintcode</a></li>
+					<li style="width: 20%"><a href="/categories/ML">ML</a></li>
+		        
+					<li style="width: 20%"><a href="/categories/Leetcode">Lintcode</a></li>
 		        
 				</ul>
 			</nav>
@@ -504,6 +510,91 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/03/24/henry/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-mr" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/05/mr/">MapReduce</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/05/mr/" class="archive-article-date">
+  	<time datetime="2019-01-05T18:11:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.MapReduce含义</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MapReduce指两个函数, 分别是Map函数和Reduce函数</span><br></pre></td></tr></table></figure>
+<p>1.1 Map函数<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Map函数被称为映射</span><br><span class="line"><span class="code">    过程: String ==&gt; (key, value)</span></span><br><span class="line"></span><br><span class="line">映射的个数不会变，只是将其变成另一种形式</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Example:</span><br><span class="line">    abc ==&gt; (abc, 1)</span><br></pre></td></tr></table></figure>
+<p>1.2 Reduce函数<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Reduce函数被称为规约</span><br><span class="line"><span class="code">    将属于相同key的(key, value)进行合并</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Example:</span><br><span class="line"><span class="code">    (abc, 1)</span></span><br><span class="line"><span class="code">    (abc, 1)    ==&gt;   (abc, 1+1+1)</span></span><br><span class="line"><span class="code">    (abc, 1)</span></span><br></pre></td></tr></table></figure>
+<p>2.MapReduce流程</p>
+<p>2.1 MapReduce流程图</p>
+<p><img src="/img/MR.png" alt="avatar"></p>
+<p>2.2 shuffling</p>
+<p>(1) 所处位置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在map与reduce之间</span><br></pre></td></tr></table></figure></p>
+<p>(2) shuffling的意义<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">shuffling就是将相同key的(key, value)放到一起</span><br><span class="line"></span><br><span class="line">从mapping到shuffling的过程中, IO是杂乱无序的, 和洗牌类似</span><br></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MapReduce//" class="article-tag-list-link color5">MapReduce</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/05/mr/">展开全文 >></a>
         </p>
       
 
