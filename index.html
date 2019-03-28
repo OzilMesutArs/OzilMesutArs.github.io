@@ -560,7 +560,25 @@
 <p>2.2 生成新的fsimage和editlog的流程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a. 当checkpoint时间到时，SNN将NN的fsimage和ediitlog拉取过来并将其合并为一个新的fsimage</span><br><span class="line">   </span><br><span class="line">   当到达检查点时, 会生成新的editlog文件, 之后所进行的操作都写在新的editlog中</span><br><span class="line">   (如果到达下次checkpoint前操作比较频繁，editlog不一定只有一个，可能会有多个) </span><br><span class="line"></span><br><span class="line">b. SNN将新生成的fsimage传给NN</span><br><span class="line"></span><br><span class="line">c. 新的fsimage就是checkpoint后的fsimage, 新的editlogs就变成editlogs</span><br></pre></td></tr></table></figure></p>
 <p>3.如何设定checkpoint时间间隔</p>
 <p>3.1 设置于哪个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs-sit.xml</span><br></pre></td></tr></table></figure></p>
-<p>3.2 参数简介<br>|参数名|默认值|描述|<br>|:——-:|:——-:|:——-:|<br>|dfs.namenode.checkpoint.period|3600|The number of seconds between two periodic checkpoints|</p>
+<p>3.2 参数简介</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">dfs.namenode.checkpoint.period</td>
+<td style="text-align:center">3600</td>
+<td style="text-align:center">The number of seconds between two periodic checkpoints</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>3.3 Example<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">假设NN运行了25小时13分钟, SNN每过一小时就将NN的fsimage和editlog文件合并生成新的fsimage, 但是如果此时NN发生问题, SNN只能将其恢复到运行第25小时的状态</span><br></pre></td></tr></table></figure></p>
 <p><img src="/img/editlog.png" alt="avatar"></p>
 
