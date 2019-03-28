@@ -6,15 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://OzilMesutArs.github.io">
-  <title>Archives: 2019 | OzilMesutArs&#39;s blog</title>
+  <title>HDFS写流程 | OzilMesutArs&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="OzilMesutArs&#39;s blog">
-<meta property="og:url" content="http://OzilMesutArs.github.io/archives/2019/index.html">
+  <meta name="description" content="1.写操作的职责1将存储在linux上的文件放入HDFS上 2.写操作具体流程1(1) client 调用Distributed file system的create方法, 其参数就是文件夹路径path, dfs.create(path) 123456(2) 与NN进行RPC通信, 检查该path是否存在&amp;amp;&amp;amp;检查是否有权限创建文件    if(检查成功):        根据路径">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HDFS写流程">
+<meta property="og:url" content="http://OzilMesutArs.github.io/2019/01/04/hdfsWrite/index.html">
 <meta property="og:site_name" content="OzilMesutArs&#39;s blog">
+<meta property="og:description" content="1.写操作的职责1将存储在linux上的文件放入HDFS上 2.写操作具体流程1(1) client 调用Distributed file system的create方法, 其参数就是文件夹路径path, dfs.create(path) 123456(2) 与NN进行RPC通信, 检查该path是否存在&amp;amp;&amp;amp;检查是否有权限创建文件    if(检查成功):        根据路径">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://ozilmesutars.github.io/img/hdfs/hdfsWrite.png">
+<meta property="og:updated_time" content="2019-03-28T06:02:17.373Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OzilMesutArs&#39;s blog">
+<meta name="twitter:title" content="HDFS写流程">
+<meta name="twitter:description" content="1.写操作的职责1将存储在linux上的文件放入HDFS上 2.写操作具体流程1(1) client 调用Distributed file system的create方法, 其参数就是文件夹路径path, dfs.create(path) 123456(2) 与NN进行RPC通信, 检查该path是否存在&amp;amp;&amp;amp;检查是否有权限创建文件    if(检查成功):        根据路径">
+<meta name="twitter:image" content="http://ozilmesutars.github.io/img/hdfs/hdfsWrite.png">
   
     <link rel="alternative" href="/atom.xml" title="OzilMesutArs&#39;s blog" type="application/atom+xml">
   
@@ -162,193 +168,64 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-hdfsWrite" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/27/temp/" class="archive-article-date">
-  	<time datetime="2019-03-27T10:54:51.219Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-27</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/24/commonNodeLL/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/24/commonNodeLL/">common node of LinkedList</a>
+    <h1 class="article-title" itemprop="name">
+      HDFS写流程
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Lintcode//" class="article-tag-list-link color4">Lintcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/24/ml/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/24/ml/">ML simple Linear Regression</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/ML//" class="article-tag-list-link color3">ML</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/24/sql/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/24/sql/">HDFS</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/24/henry/" class="archive-article-date">
-  	<time datetime="2019-03-25T04:55:03.333Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/04/hdfsWrite/" class="archive-article-date">
+        
+        <a href="/2019/01/04/hdfsWrite/" class="archive-article-date">
   	<time datetime="2019-01-04T18:11:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-04</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/04/hdfsWrite/">HDFS写流程</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/img/hdfs/hdfsWrite.png" alt="avatar"></p>
+<p>1.写操作的职责<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将存储在linux上的文件放入HDFS上</span><br></pre></td></tr></table></figure></p>
+<p>2.写操作具体流程<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1) client 调用Distributed file system的create方法, 其参数就是文件夹路径path, dfs.create(path)</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(2) 与NN进行RPC通信, 检查该path是否存在&amp;&amp;检查是否有权限创建文件</span><br><span class="line"><span class="code">    if(检查成功):</span></span><br><span class="line"><span class="code">        根据路径创建一个新文件，但不关联任何的block(意味着是空文件)</span></span><br><span class="line"><span class="code">        return FSDataOutputStream对象</span></span><br><span class="line"><span class="code">    else:</span></span><br><span class="line"><span class="code">        返回相应的错误信息</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(3) client调用FSDataOutputStream对象的write方法将第一个块写给DN1, DN1复制block给DN2, DN2复制block给DN3</span><br><span class="line"></span><br><span class="line"><span class="code">    都写完后, DN3返回ack给DN2, DN2收到ack packet返回ack给DN1, DN1收到ack packet返回ack给FSOutputStream对象</span></span><br><span class="line"></span><br><span class="line"><span class="code">    到此标志一个block的3个replica全部写完</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(4) 当文件内容全部写完, client调用FSDataOutputStream的close()方法, 关闭输出流, flush缓存区的数据包</span><br></pre></td></tr></table></figure>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(5)调用Distributed file system的complete()方法, 告诉NN已经全部写完</span><br></pre></td></tr></table></figure>
+<p>3.注意事项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">写操作使用的是OutputStream</span><br></pre></td></tr></table></figure></p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -361,93 +238,113 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/2019/01/04/hdfsWrite/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/03/storeStrategy/" class="archive-article-date">
-  	<time datetime="2019-01-03T20:12:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-03</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2019/03/24/henry/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/03/storeStrategy/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HDFS副本放置策略</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/03/storeStrategy/">HDFS副本放置策略</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/01/02/editlog/" class="archive-article-date">
-  	<time datetime="2019-01-03T06:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-02</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/01/02/editlog/">fsimage和editlog</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -470,8 +367,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
