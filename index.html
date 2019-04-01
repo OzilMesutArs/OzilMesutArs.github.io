@@ -59,9 +59,13 @@
 	        
 				<li><a href="/categories/MapReduce">MapReduce</a></li>
 	        
-				<li><a href="/categories/ML">ML</a></li>
+				<li><a href="/categories/Netty">Netty</a></li>
 	        
 				<li><a href="/categories/Leetcode">Lintcode</a></li>
+	        
+				<li><a href="/categories/JVM">JVM</a></li>
+	        
+				<li><a href="/categories/concurrency">Concurrency</a></li>
 	        
 			</ul>
 		</nav>
@@ -125,6 +129,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -145,15 +153,19 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 20%"><a href="/">主页</a></li>
+					<li style="width: 14.285714285714286%"><a href="/">主页</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/HDFS/">HDFS</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/HDFS/">HDFS</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/MapReduce">MapReduce</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/MapReduce">MapReduce</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/ML">ML</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/Netty">Netty</a></li>
 		        
-					<li style="width: 20%"><a href="/categories/Leetcode">Lintcode</a></li>
+					<li style="width: 14.285714285714286%"><a href="/categories/Leetcode">Lintcode</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/categories/JVM">JVM</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/categories/concurrency">Concurrency</a></li>
 		        
 				</ul>
 			</nav>
@@ -170,12 +182,36 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-temp" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-nameService" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/01/nameService/">NameService</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/01/nameService/" class="archive-article-date">
+  	<time datetime="2019-04-01T17:11:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-01</time>
+</a>
+        
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>1.NameService产生背景<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">大数据中所有组件都是主从架构(Master-slave)</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">    HDFS的读写请求都是先NN节点</span><br><span class="line"></span><br><span class="line">例外:</span><br><span class="line">    hbase读写请求不经过master, 建表删表通过master</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">在HDFS和YARN中每个组件都是一个进程</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">    HDFS:</span><br><span class="line">        NN、SNN、DN都是进程</span><br><span class="line">    YARN:</span><br><span class="line">        RM、NM都是进程</span><br><span class="line"></span><br><span class="line">所有读写请求都通过NN执行, 提job需要经过RM</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果NN节点failure, 此时就无法对外提供服务</span><br><span class="line"></span><br><span class="line">为了应对这种情况, 企业会配置两个NN, 分别为NN1和NN2, 当前只有NN1提供服务, NN2待命, 当需要时就会立即切换提供服务</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">当部署伪分布式时, HDFS有SNN进程, 那么SNN与NN2有什么不同？</span><br><span class="line"></span><br><span class="line">    SNN的作用是在checkpoint时间到达时, 将NN上的fsimage和editlog合并成新的fsimage并推送给NN</span><br><span class="line"></span><br><span class="line">    而NN2是NN, 只是状态是standby, 对于NN1的所有操作它都会做实时备份，随时准备从standby状态切换到active状态</span><br><span class="line"></span><br><span class="line">    这样单独生成一个SNN节点就没有必要了, 因为SNN可以上升级别变成NN</span><br></pre></td></tr></table></figure>
+<p>2.无感知及为什么要引入nameservice<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">无感知是指使用者不需要关注NN1和NN2的状态</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果在生产中只部署伪分布式的情况下, 当在HDFS上执行查看操作，只需要 hdfs dfs -ls hdfs://ip1:9000/, 但是该方式在HA上会引起问题, 如果NN1 failure，那么需要手动修改代码或者执行脚本, 无法做到无感知</span><br></pre></td></tr></table></figure>
+<p>3.解决方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">使用命名空间(nameservice), 可以使切换是无感知的</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/NameService.png" alt="avatar"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Example:</span><br><span class="line"></span><br><span class="line">当敲入hdfs dfs -ls hdfs://OzilNameService/时, 系统会自动去找core-site.xml和hdfs-site.xml文件, 找到对应NN1和NN2的ip是否是该命名空间的参数，然后尝试连接第一台机器(NN1), 如果NN1不是active, 会尝试连接NN2, 如果是active状态, 就按照命令执行相应的操作</span><br></pre></td></tr></table></figure></p>
+<p>4.注意<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命名空间不是进程, 是配置于参数文件中的参数</span><br></pre></td></tr></table></figure></p>
+
       
 
       
@@ -184,10 +220,21 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/03/27/temp/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/04/01/nameService/">展开全文 >></a>
         </p>
       
 
