@@ -337,6 +337,93 @@
 
 
   
+    <article id="post-sql" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/24/sql/">HDFS</a>
+    </h1>
+  
+
+        
+        <a href="/2019/03/24/sql/" class="archive-article-date">
+  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>HDFS使用主从架构</li>
+</ol>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">其中分为三部分</span><br><span class="line">NN、SNN、DN</span><br><span class="line">NN是主节点，也叫名称节点 </span><br><span class="line">SNN在主节点挂了之后起作用，也叫第二名称节点</span><br><span class="line">DN是从，也叫数据节点</span><br></pre></td></tr></table></figure>
+<p><img src="/img/HDFS_Architecture.png" alt="avatar"></p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注: 其中圆形代表数据块1，菱形代表数据块2</span><br></pre></td></tr></table></figure>
+<p>1.1 NameNode<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1) NN代表文件系统的命名空间</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(2) 存储内容</span><br><span class="line"><span class="code">    a. 文件名称</span></span><br><span class="line"><span class="code">    b. 文件目录结构</span></span><br><span class="line"><span class="code">    c. 文件属性(包括创建时间、权限、副本数)</span></span><br><span class="line"><span class="code">    d. blockmap: 文件对应的数据块与数据块分布的datanode节点一一映射关系</span></span><br><span class="line"><span class="code">       注: namenode不会持久化存储这种映射关系</span></span><br><span class="line"><span class="code">           主要靠datanode定期发送blockreport给master说明机器上存储了哪些数据块的副本，master接收信息后定期更新存储关系</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(3) NameNode主要维护的是文件的目录系统(文件系统树)，以两种文件永久保存在磁盘</span><br><span class="line"><span class="code">    &#123;</span></span><br><span class="line"><span class="code">        fsimage &lt;==&gt; 命名空间镜像文件,</span></span><br><span class="line"><span class="code">        edit    &lt;==&gt; 编辑日志</span></span><br><span class="line"><span class="code">    &#125;</span></span><br></pre></td></tr></table></figure>
+<p>1.2 DataNode</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 存储数据块和块的checksum</span><br><span class="line"><span class="code">    a. 当某一个副本的checksum不对，会复制其他的副本</span></span><br><span class="line"><span class="code">    b. 如果所有副本都错误，会在50070的web界面显示出来</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(2)与NN通信: </span><br><span class="line"><span class="code">    a. 每隔3秒向master发送心跳包</span></span><br><span class="line"><span class="code">    b. 每10次发送一个blockreport</span></span><br><span class="line">(3) 主要用途</span><br><span class="line"><span class="code">    a. 文件数据块的读写</span></span><br></pre></td></tr></table></figure>
+<p>1.3 SNN<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1)SNN存储的内容:  fsimage + editlog</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(2)作用: 定期合并fsimage + editlog为新的fsimage并推送给NN，该文件被称作checkpoint</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/03/24/sql/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ml" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -451,40 +538,12 @@
 
 
   
-    <article id="post-sql" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-henry" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/24/sql/">HDFS</a>
-    </h1>
-  
-
-        
-        <a href="/2019/03/24/sql/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li>HDFS使用主从架构</li>
-</ol>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">其中分为三部分</span><br><span class="line">NN、SNN、DN</span><br><span class="line">NN是主节点，也叫名称节点 </span><br><span class="line">SNN在主节点挂了之后起作用，也叫第二名称节点</span><br><span class="line">DN是从，也叫数据节点</span><br></pre></td></tr></table></figure>
-<p><img src="/img/HDFS_Architecture.png" alt="avatar"></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注: 其中圆形代表数据块1，菱形代表数据块2</span><br></pre></td></tr></table></figure>
-<p>1.1 NameNode<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1) NN代表文件系统的命名空间</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(2) 存储内容</span><br><span class="line"><span class="code">    a. 文件名称</span></span><br><span class="line"><span class="code">    b. 文件目录结构</span></span><br><span class="line"><span class="code">    c. 文件属性(包括创建时间、权限、副本数)</span></span><br><span class="line"><span class="code">    d. blockmap: 文件对应的数据块与数据块分布的datanode节点一一映射关系</span></span><br><span class="line"><span class="code">       注: namenode不会持久化存储这种映射关系</span></span><br><span class="line"><span class="code">           主要靠datanode定期发送blockreport给master说明机器上存储了哪些数据块的副本，master接收信息后定期更新存储关系</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(3) NameNode主要维护的是文件的目录系统(文件系统树)，以两种文件永久保存在磁盘</span><br><span class="line"><span class="code">    &#123;</span></span><br><span class="line"><span class="code">        fsimage &lt;==&gt; 命名空间镜像文件,</span></span><br><span class="line"><span class="code">        edit    &lt;==&gt; 编辑日志</span></span><br><span class="line"><span class="code">    &#125;</span></span><br></pre></td></tr></table></figure>
-<p>1.2 DataNode</p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 存储数据块和块的checksum</span><br><span class="line"><span class="code">    a. 当某一个副本的checksum不对，会复制其他的副本</span></span><br><span class="line"><span class="code">    b. 如果所有副本都错误，会在50070的web界面显示出来</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(2)与NN通信: </span><br><span class="line"><span class="code">    a. 每隔3秒向master发送心跳包</span></span><br><span class="line"><span class="code">    b. 每10次发送一个blockreport</span></span><br><span class="line">(3) 主要用途</span><br><span class="line"><span class="code">    a. 文件数据块的读写</span></span><br></pre></td></tr></table></figure>
-<p>1.3 SNN<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1)SNN存储的内容:  fsimage + editlog</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(2)作用: 定期合并fsimage + editlog为新的fsimage并推送给NN，该文件被称作checkpoint</span><br></pre></td></tr></table></figure>
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"hh"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -494,21 +553,10 @@
       
       
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/03/24/sql/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/03/24/henry/">展开全文 >></a>
         </p>
       
 
@@ -538,12 +586,67 @@
 
 
   
-    <article id="post-henry" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-YARN_HA" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/07/YARN_HA/">YARN HA</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/07/YARN_HA/" class="archive-article-date">
+  	<time datetime="2019-01-07T18:11:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-07</time>
+</a>
+        
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">	System.out.println(<span class="string">"hh"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>1.YARN HA架构图<br><img src="/img/yarn_ha.png" alt="avatar"></p>
+<p>2.YARN HA组件的运行位置</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>机器名</th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ozil001</td>
+<td>ZK</td>
+<td>rm(ZKFC)</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>Ozil002</td>
+<td>ZK</td>
+<td>rm(ZKFC)</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>Ozil003</td>
+<td>ZK</td>
+<td>rm(ZKFC)</td>
+<td>nm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>3.流程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) 当提交job时, 通过yarn的命名空间, 找到active的RM, 作业运行状态(请求状态)存储于/rmstore目录下(位于ZooKeeper中)</span><br><span class="line"></span><br><span class="line">(2) 当RM进程启动时, 会向ZK集群的/rmstroe目录写入lock文件, 如果成功写入, 那么该节点就是active状态, 如果失败的话, 该节点就是standby状态。RM节点会一直监控lock文件的存在, 如果不存在, 会试图去ZK集群上的该目录下创建lock文件, 创建成功的standbyRM就可以变为Active的RM</span><br><span class="line"></span><br><span class="line">(3) RM启动后会接收client提出的请求, 接收和监控NM的资源状况的汇报, 负责资源的分配和调度, 启动Application Master, 启动和监控应用主程序</span><br></pre></td></tr></table></figure>
+<p>4.各个组件简介</p>
+<p>4.1 ZKFC<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RM中的一个线程, 不是独立的进程</span><br></pre></td></tr></table></figure></p>
+<p>4.2 RMStateStore<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(1) 存储于ZooKeeper集群的/rmstore目录下, active状态的RM会向该目录写入应用的信息</span><br><span class="line">(2) 当active的RM failure后, standby状态的RM会通过ZKFC选举成功使其状态变为active后, 会进行以下6步操作:</span><br><span class="line"></span><br><span class="line">        会从/rmstore目录提取相应的job信息</span><br><span class="line">        重新构建job的内存信息</span><br><span class="line">        启动内部服务</span><br><span class="line">        开始接收NM的心跳</span><br><span class="line">        构建集群的资源信息</span><br><span class="line">        接收client的job提交请求</span><br></pre></td></tr></table></figure></p>
+<p>4.3 RM<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) 启动时会向ZK的目录/rmstore写lock文件, 成功写入该RM就为active状态, 否则就为standby状态。运行于RM上的ZKFC(线程)会一直监控该lock文件是否存在,如果此时RM failure, ZooKeeper与ZKFC之间的session断开了, 该lock文件会被删除, 其他standby状态的RM会通过选举成为active的RM</span><br><span class="line"></span><br><span class="line">(2) 接收client端请求, 接收和监控NM资源状况的汇报, 负责资源调度和分配</span><br><span class="line"></span><br><span class="line">(3) 启动和监控在NM节点上由Application Manager启动的container中的Application Master， 其中Application Master指的是作业的主程序</span><br></pre></td></tr></table></figure></p>
+<p>4.4 NM<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1) 节点资源管理</span><br><span class="line">(2) 启动容器运行task计算</span><br><span class="line">(3) 上报资源, 汇报task进度</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -553,10 +656,21 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/03/24/henry/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/01/07/YARN_HA/">展开全文 >></a>
         </p>
       
 
@@ -993,107 +1107,10 @@
 
 
   
-    <article id="post-editlog" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/02/editlog/">fsimage和editlog</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/02/editlog/" class="archive-article-date">
-  	<time datetime="2019-01-03T06:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>1.fsimage和editlog的含义<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fsimage: 镜像文件, 代表某一时间系统的文件系统树</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">editlog: 操作日志, 代表从该时间点之后的操作</span><br></pre></td></tr></table></figure>
-<p>2.生成新的fsimage的流程</p>
-<p>2.1 为什么要生成新的faimage<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">防止editlog过大</span><br></pre></td></tr></table></figure></p>
-<p>2.2 生成新的fsimage和editlog的流程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a. 当checkpoint时间到时，SNN将NN的fsimage和ediitlog拉取过来并将其合并为一个新的fsimage</span><br><span class="line">   </span><br><span class="line">   当到达检查点时, 会生成新的editlog文件, 之后所进行的操作都写在新的editlog中</span><br><span class="line">   (如果到达下次checkpoint前操作比较频繁，editlog不一定只有一个，可能会有多个) </span><br><span class="line"></span><br><span class="line">b. SNN将新生成的fsimage传给NN</span><br><span class="line"></span><br><span class="line">c. 新的fsimage就是checkpoint后的fsimage, 新的editlogs就变成editlogs</span><br></pre></td></tr></table></figure></p>
-<p>3.如何设定checkpoint时间间隔</p>
-<p>3.1 设置于哪个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs-sit.xml</span><br></pre></td></tr></table></figure></p>
-<p>3.2 参数简介</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">参数名</th>
-<th style="text-align:center">默认值</th>
-<th style="text-align:center">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">dfs.namenode.checkpoint.period</td>
-<td style="text-align:center">3600</td>
-<td style="text-align:center">The number of seconds between two periodic checkpoints</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>3.3 Example<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">假设NN运行了25小时13分钟, SNN每过一小时就将NN的fsimage和editlog文件合并生成新的fsimage, 但是如果此时NN发生问题, SNN只能将其恢复到运行第25小时的状态</span><br></pre></td></tr></table></figure></p>
-<p><img src="/img/editlog.png" alt="avatar"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/02/editlog/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 
 
