@@ -6,16 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://OzilMesutArs.github.io">
-  <title>about | OzilMesutArs&#39;s blog</title>
+  <title>Hadoop 伪分布式部署 | OzilMesutArs&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://OzilMesutArs.github.io/about/index.html">
+  <meta name="description" content="1.预处理 (1) 新建hadoop用户1useradd hadoop (2) 给hadoop用户赋予sudo权限12vim /etc/sudoers      添加: hadoop  ALL=(ALL)       NOPASSWD: ALL (3) 切换到hadoop用户1su - hadoop (4) 在hadoop的home directory下创建app三个文件夹1mkdir app (">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop 伪分布式部署">
+<meta property="og:url" content="http://OzilMesutArs.github.io/2019/04/16/HDFS_DEPLOY/index.html">
 <meta property="og:site_name" content="OzilMesutArs&#39;s blog">
+<meta property="og:description" content="1.预处理 (1) 新建hadoop用户1useradd hadoop (2) 给hadoop用户赋予sudo权限12vim /etc/sudoers      添加: hadoop  ALL=(ALL)       NOPASSWD: ALL (3) 切换到hadoop用户1su - hadoop (4) 在hadoop的home directory下创建app三个文件夹1mkdir app (">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-25T05:44:25.356Z">
+<meta property="og:image" content="http://ozilmesutars.github.io/img/Hadoop_Deploy.png">
+<meta property="og:updated_time" content="2019-04-16T06:07:24.147Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
+<meta name="twitter:title" content="Hadoop 伪分布式部署">
+<meta name="twitter:description" content="1.预处理 (1) 新建hadoop用户1useradd hadoop (2) 给hadoop用户赋予sudo权限12vim /etc/sudoers      添加: hadoop  ALL=(ALL)       NOPASSWD: ALL (3) 切换到hadoop用户1su - hadoop (4) 在hadoop的home directory下创建app三个文件夹1mkdir app (">
+<meta name="twitter:image" content="http://ozilmesutars.github.io/img/Hadoop_Deploy.png">
   
     <link rel="alternative" href="/atom.xml" title="OzilMesutArs&#39;s blog" type="application/atom+xml">
   
@@ -187,27 +192,141 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="page-" class="article article-type-page " itemscope itemprop="blogPost">
+            <article id="post-HDFS_DEPLOY" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      Hadoop 伪分布式部署
     </h1>
   
 
         
-        <a href="/about/index.html" class="archive-article-date">
-  	<time datetime="2019-03-25T05:44:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
+        <a href="/2019/04/16/HDFS_DEPLOY/" class="archive-article-date">
+  	<time datetime="2019-04-16T21:23:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>1.预处理</p>
+<p>(1) 新建hadoop用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd hadoop</span><br></pre></td></tr></table></figure></p>
+<p>(2) 给hadoop用户赋予sudo权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sudoers  </span><br><span class="line">    添加: hadoop  ALL=(ALL)       NOPASSWD: ALL</span><br></pre></td></tr></table></figure></p>
+<p>(3) 切换到hadoop用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - hadoop</span><br></pre></td></tr></table></figure></p>
+<p>(4) 在hadoop的home directory下创建app三个文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir app</span><br></pre></td></tr></table></figure></p>
+<p>(5) 上传jdk-7u79-linux-x64.tar.gz到app目录下, 并解压jdk到/usr/java目录下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf jdk-7u79-linux-x64.tar.gz -C /usr/java</span><br></pre></td></tr></table></figure></p>
+<p>(6) 在/etc/profile中配置JDK全局变量, 并生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.7.0_79</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>(7) 上传hadoop-2.6.0-cdh5.7.0.tar.gz文件, 并解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf hadoop-2.6.0-cdh5.7.0.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>(8) 配置无密码访问<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t dsa -P &apos;&apos; -f ~/.ssh/id_dsa(生成一个key&apos;s randomart image)</span><br><span class="line">cat ~/.ssh/id_dsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>注意:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r--. 1 hadoop hadoop 358 Nov 37 25:65 authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>此时authorized_keys的权限为644，会出问题, 所以将其改为600权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>2.修改配置文件</p>
+<p>(1) hadoop-env.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi $HADOOP_HOME/etc/hadoop/hadoop-env.sh</span><br><span class="line"></span><br><span class="line">将export JAVA_HOME=$&#123;JAVA_HOME&#125; 修改为export JAVA_HOME=/usr/java/jdk1.7.0_79</span><br><span class="line"></span><br><span class="line">添加 export HADOOP_PREFIX=/home/hadoop/app/hadoop-2.6.0-cdh5.7.0</span><br></pre></td></tr></table></figure></p>
+<p>(2) core-site.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi $HADOOP_HOME/etc/hadoop/core-site.xml</span><br></pre></td></tr></table></figure></p>
+<p>添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://hadoop:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>(3) hdfs-site.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>(4) mapred-site.xml</p>
+<p>由于原始hadoop文件夹下只有mapred-site.xml.template, 所以需要复制出mapred-site.xml文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp mapred-site.xml.template mapred-site.xml</span><br></pre></td></tr></table></figure></p>
+<p>然后再mapred-site.xml中添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>(5) yarn-site.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>3.配置文件使用到的参数官网介绍<br>(1) core-site.xml</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">name</th>
+<th style="text-align:center">value</th>
+<th style="text-align:center">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">fs.defaultFS</td>
+<td style="text-align:center">file:///</td>
+<td style="text-align:center">The name of the default file system.The uri’s authority is used to determine the host, port, etc. for a filesystem</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>(2) hdfs-site.xml</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">name</th>
+<th style="text-align:center">value</th>
+<th style="text-align:center">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">dfs.replication</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Default block replication. The actual number of replications can be specified when the file is created. The default is used if replication is not specified in create time.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>(3) mapred-site.xml</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">name</th>
+<th style="text-align:center">value</th>
+<th style="text-align:center">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mapreduce.framework.name</td>
+<td style="text-align:center">local</td>
+<td style="text-align:center">The runtime framework for executing MapReduce jobs. Can be one of local, classic or yarn.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>(4) yarn-site.xml</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">name</th>
+<th style="text-align:center">value</th>
+<th style="text-align:center">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">yarn.nodemanager.aux-services</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">the valid service name should only contain a-zA-Z0-9_ and can not start with numbers</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>4.启动步骤</p>
+<p>(1) 格式化hdfs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs namenode -format</span><br></pre></td></tr></table></figure></p>
+<p>(2) 启动hdfs<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$HADOOP_HOME/sbin/start-dfs.sh</span><br></pre></td></tr></table></figure></p>
+<p>(3) 输入JPS查看进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">9757 NameNode</span><br><span class="line">9854 DataNode</span><br><span class="line">10050 SecondaryNameNode</span><br></pre></td></tr></table></figure></p>
+<p>如果出现上面3个进程就可视为hdfs启动成功</p>
+<p>(4) 启动yarn<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$HADOOP_HOME/sbin/start-yarn.sh</span><br></pre></td></tr></table></figure></p>
+<p>(5) 输入JPS查看进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">15734 ResourceManager</span><br><span class="line">15822 NodeManager</span><br></pre></td></tr></table></figure></p>
+<p>如果额外出现上面2个进程即可视为yarn启动成功</p>
+<p>5.测试</p>
+<p>(1) 在hdfs上建立/user/$USER_NAME文件夹, 此时$USER_NAME为hadoop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -mkdir /user/hadoop</span><br></pre></td></tr></table></figure></p>
+<p>(2) 切换到$HADOOP_HOME目录, 上传文件到HDFS的input文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -put etc/hadoop input</span><br></pre></td></tr></table></figure></p>
+<p>(3) 运行官网提供的MR Test<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0-cdh5.7.0.jar grep input output &apos;dfs[a-z.]+&apos;</span><br></pre></td></tr></table></figure></p>
+<p>(4) 验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入$ip_address:8088, 如下图, 如果FinalStatus字段是SUCCESS, 即该MR job运行成功, 也就意味着hadoop为分布式搭建成功</span><br></pre></td></tr></table></figure>
+<p><img src="/img/Hadoop_Deploy.png" alt="avatar"></p>
+<p>6.验证支持的压缩类型</p>
+<p>(1) 输入hadoop checknative<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INFO bzip2.Bzip2Factory: Successfully loaded &amp; initialized native-bzip2 library system-native</span><br><span class="line">INFO zlib.ZlibFactory: Successfully loaded &amp; initialized native-zlib library</span><br><span class="line">Native library checking:</span><br><span class="line">hadoop:  true /home/hadoop/app/hadoop-2.6.0-cdh5.7.0/lib/native/libhadoop.so.1.0.0</span><br><span class="line">zlib:    true /lib64/libz.so.1</span><br><span class="line">snappy:  true /usr/lib64/libsnappy.so.1</span><br><span class="line">lz4:     true revision:99</span><br><span class="line">bzip2:   true /lib64/libbz2.so.1</span><br><span class="line">openssl: true /usr/lib64/libcrypto.so</span><br></pre></td></tr></table></figure></p>
+<p>此时可以知道hadoop支持哪些压缩格式</p>
+
       
 
       
@@ -237,6 +356,17 @@
       
       
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Hadoop//" class="article-tag-list-link color2">Hadoop</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -286,7 +416,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/about/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://OzilMesutArs.github.io/2019/04/16/HDFS_DEPLOY/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -298,6 +428,16 @@
 </article>
 
   
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/01/nameService/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NameService</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -348,7 +488,7 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

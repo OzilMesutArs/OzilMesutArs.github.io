@@ -57,6 +57,8 @@
 	        
 				<li><a href="/categories/HDFS">HDFS</a></li>
 	        
+				<li><a href="/categories/Hadoop">Hadoop</a></li>
+	        
 				<li><a href="/categories/MapReduce">MapReduce</a></li>
 	        
 				<li><a href="/categories/Netty">Netty</a></li>
@@ -133,6 +135,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -153,19 +157,21 @@
 				<ul style="width: 70%">
 				
 				
-					<li style="width: 14.285714285714286%"><a href="/">主页</a></li>
+					<li style="width: 12.5%"><a href="/">主页</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/HDFS">HDFS</a></li>
+					<li style="width: 12.5%"><a href="/categories/HDFS">HDFS</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/MapReduce">MapReduce</a></li>
+					<li style="width: 12.5%"><a href="/categories/Hadoop">Hadoop</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/Netty">Netty</a></li>
+					<li style="width: 12.5%"><a href="/categories/MapReduce">MapReduce</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/Leetcode">Lintcode</a></li>
+					<li style="width: 12.5%"><a href="/categories/Netty">Netty</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/JVM">JVM</a></li>
+					<li style="width: 12.5%"><a href="/categories/Leetcode">Lintcode</a></li>
 		        
-					<li style="width: 14.285714285714286%"><a href="/categories/concurrency">Concurrency</a></li>
+					<li style="width: 12.5%"><a href="/categories/JVM">JVM</a></li>
+		        
+					<li style="width: 12.5%"><a href="/categories/concurrency">Concurrency</a></li>
 		        
 				</ul>
 			</nav>
@@ -181,6 +187,113 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-storeStrategy" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/03/storeStrategy/">HDFS副本放置策略</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/03/storeStrategy/" class="archive-article-date">
+  	<time datetime="2019-01-03T20:12:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.blocksize与副本数的设置</p>
+<p>1.1 配置参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在hdfs-site中配置</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">dfs.blocksize</td>
+<td style="text-align:center">134217728(128M)</td>
+<td style="text-align:center">The default block size for new files, in bytes</td>
+</tr>
+<tr>
+<td style="text-align:center">dfs.replication</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Default block replication</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>1.2 block数计算<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg. 如果一个文件260M, 该文件会占据3个block, 分别是2个128M的block，和一个4M的block</span><br></pre></td></tr></table></figure></p>
+<p>2.机架示意图</p>
+<p><img src="/img/racket.png" alt="avatar"></p>
+<p>3.副本放置策略</p>
+<p><img src="/img/storeStrategy.png" alt="avatar"></p>
+<p>3.1 第一个副本放置策略<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">假设客户端提交文件所在机器就是datanode节点, 那么第一个块就在该datanode节点上</span><br><span class="line"></span><br><span class="line">如果不是就存储在磁盘not full, cpu not busy的节点上(通过NN发现的)</span><br></pre></td></tr></table></figure></p>
+<p>3.2 其他副本的放置策略</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">如果只有一个机架:</span><br><span class="line"><span class="code">    其他副本存放在于不保存第一个副本的机器上</span></span><br><span class="line"></span><br><span class="line">如果有多个机架</span><br><span class="line"><span class="code">    第二个副本存放于不同机架上的任意机器上</span></span><br><span class="line"><span class="code">    第三个副本存放于第二个副本所在的机架不同的机器上</span></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/03/storeStrategy/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-editlog" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
