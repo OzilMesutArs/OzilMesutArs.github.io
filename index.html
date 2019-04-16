@@ -375,6 +375,115 @@
 
 
   
+    <article id="post-hadoop_compile" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/16/hadoop_compile/">Hadoop 源码编译</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/16/hadoop_compile/" class="archive-article-date">
+  	<time datetime="2019-04-16T21:23:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.准备工作(root用户)</p>
+<p>(1) 安装相关的库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install -y svn ncurses-devel</span><br><span class="line">yum install -y gcc gcc-c++ make cmake</span><br><span class="line">yum install -y openssl openssl-devel svn ncurses-devel zlib-devel libtool</span><br><span class="line">yum install -y snappy snappy-devel bzip2 bzip2-devel lzo lzo-devel lzop autoconf automake cmake</span><br></pre></td></tr></table></figure></p>
+<p>(2) 将jdk-7u80-linux-x64.tar.gz上传到/usr/java目录, 然后解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf jdk-7u80-linux-x64.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>(3) 在/etc/profile里配置JDK环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.7.0_80</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure></p>
+<p>(4) 生效环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>2.安装Maven(hadoop用户)</p>
+<p>(1) 下载apache-maven-3.3.9-bin.tar.gz到/home/hadoop/app目录下, 并解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /home/hadoop/app</span><br><span class="line">wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf apache-maven-3.3.9-bin.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>(2) 修改环境变量并生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME=/home/hadoop/app/apache-maven-3.3.9</span><br><span class="line">export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH</span><br><span class="line">export MAVEN_OPTS=&quot;-Xms1024m -Xmx1024m&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>(3) 验证是否配置成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which mvn</span><br></pre></td></tr></table></figure></p>
+<p>如果出现如下输出即配置成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/app/apache-maven-3.3.9/bin/mvn</span><br></pre></td></tr></table></figure></p>
+<p>(4) 配置maven本地仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $MAVEN_HOME/conf</span><br><span class="line">vi setting.xml</span><br></pre></td></tr></table></figure>
+<p>在setting文件中看见如下所示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- localRepository</span><br><span class="line"> | The path to the local repository maven will use to store artifacts.</span><br><span class="line">&lt;!-- localRepository</span><br><span class="line"> | The path to the local repository maven will use to store artifacts.</span><br><span class="line"> |</span><br><span class="line"> | Default: $&#123;user.home&#125;/.m2/repository</span><br><span class="line">&lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure></p>
+<p>将其改为本地的文件夹, 如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;localRepository&gt;/home/hadoop/mavenRepositoryNew&lt;/localRepository&gt;</span><br></pre></td></tr></table></figure></p>
+<p>(5) 添加阿里云中央仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">由于网络等原因, 使用默认的中央仓库会出现很多问题, 如jar包无法正确下载, 导致编译报错, 解决方法是配置阿里云中央仓库</span><br></pre></td></tr></table></figure></p>
+<p>在之前setting.xml找到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirrors&gt;</span><br><span class="line">  &lt;!-- mirror</span><br><span class="line">   | Specifies a repository mirror site to use instead of a given repository. The repository that</span><br><span class="line">   | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used</span><br><span class="line">   | for inheritance and direct lookup purposes, and must be unique across the set of mirrors.</span><br><span class="line">   |</span><br><span class="line">  &lt;mirror&gt;</span><br><span class="line">    &lt;id&gt;mirrorId&lt;/id&gt;</span><br><span class="line">    &lt;mirrorOf&gt;repositoryId&lt;/mirrorOf&gt;</span><br><span class="line">    &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;</span><br><span class="line">    &lt;url&gt;http://my.repository.com/repo/path&lt;/url&gt;</span><br><span class="line">  &lt;/mirror&gt;</span><br><span class="line">   --&gt;</span><br><span class="line">&lt;/mirrors&gt;</span><br></pre></td></tr></table></figure></p>
+<p>将其改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirrors&gt;</span><br><span class="line">    &lt;mirror&gt;</span><br><span class="line">        &lt;id&gt;nexus-aliyun&lt;/id&gt;</span><br><span class="line">        &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;</span><br><span class="line">        &lt;name&gt;Nexus aliyun&lt;/name&gt;</span><br><span class="line">        &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;</span><br><span class="line">    &lt;/mirror&gt;</span><br><span class="line">&lt;/mirrors&gt;</span><br></pre></td></tr></table></figure></p>
+<p>3.安装protobuf</p>
+<p>(1) 安装protobuf的原因</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">本次编译的是cdh版本的hadoop源码包, 解压其源码包后发现一个BUILDING.txt文件, 文件里提供了编译其编码所需的软件</span><br><span class="line"></span><br><span class="line">* Windows System</span><br><span class="line">* JDK 1.7+</span><br><span class="line">* Maven 3.0 or later</span><br><span class="line">* Findbugs 1.3.9 (if running findbugs)</span><br><span class="line">* ProtocolBuffer 2.5.0</span><br><span class="line">* CMake 2.6 or newer</span><br><span class="line">* Windows SDK or Visual Studio 2010 Professional</span><br><span class="line">* Unix command-line tools from GnuWin32 or Cygwin: sh, mkdir, rm, cp, tar, gzip</span><br><span class="line">* zlib headers (if building native code bindings for zlib)</span><br><span class="line">* Internet connection for first build (to fetch all Maven and Hadoop dependencies)</span><br></pre></td></tr></table></figure>
+<p>(2) 下载protobuf源码包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>(3) 解压并安装protobuf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf protobuf-2.5.0.tar.gz</span><br><span class="line">cd /home/hadoop/app/protobuf-2.5.0</span><br><span class="line">./configure  --prefix=/home/hadoop/app/protobuf-2.5.0(--prefix代表源码包编译之后保存在哪)</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>(4) 配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bash_profile</span><br><span class="line">export PROTOBUF_HOME=/home/hadoop/app/protobuf-2.5.0</span><br><span class="line">export PATH=$PROTOBUF_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
+<p>(5) 验证环境变量是否生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc --version</span><br></pre></td></tr></table></figure></p>
+<p>如果按如下显示, 即环境变量生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libprotoc 2.5.0</span><br></pre></td></tr></table></figure></p>
+<p>4.下载hadoop源码包</p>
+<p>(1) 本次hadoop源码包版本是hadoop-2.6.0-cdh5.7.0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /home/hadoop/source</span><br><span class="line">wget http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.7.0-src.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>(2) 解压源码包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf hadoop-2.6.0-cdh5.7.0-src.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>5.编译源码</p>
+<p>(1) 切换到hadoop源码包的主目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd hadoop-2.6.0-cdh5.7.0</span><br></pre></td></tr></table></figure></p>
+<p>(2) Maven编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Pdist,native -DskipTests -Dtar</span><br></pre></td></tr></table></figure></p>
+<p>(3) 编译结果</p>
+<p>当出现如下输入时, 就是编译成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">[INFO] Executed tasks</span><br><span class="line">[INFO] </span><br><span class="line">[INFO] --- maven-javadoc-plugin:2.8.1:jar (module-javadocs) @ hadoop-dist ---</span><br><span class="line">[INFO] Building jar: /home/hadoop/source/hadoop-2.6.0-cdh5.7.0/hadoop-dist/target/hadoop-dist-2.6.0-cdh5.7.0-javadoc.jar</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Reactor Summary:</span><br><span class="line">[INFO] </span><br><span class="line">[INFO] Apache Hadoop Main ................................. SUCCESS [  2.151 s]</span><br><span class="line">[INFO] Apache Hadoop Project POM .......................... SUCCESS [  1.014 s]</span><br><span class="line">[INFO] Apache Hadoop Annotations .......................... SUCCESS [  3.036 s]</span><br><span class="line">[INFO] Apache Hadoop Assemblies ........................... SUCCESS [  0.428 s]</span><br><span class="line">[INFO] Apache Hadoop Project Dist POM ..................... SUCCESS [  1.753 s]</span><br><span class="line">[INFO] Apache Hadoop Maven Plugins ........................ SUCCESS [  3.555 s]</span><br><span class="line">[INFO] Apache Hadoop MiniKDC .............................. SUCCESS [  4.432 s]</span><br><span class="line">[INFO] Apache Hadoop Auth ................................. SUCCESS [  4.854 s]</span><br><span class="line">[INFO] Apache Hadoop Auth Examples ........................ SUCCESS [  2.944 s]</span><br><span class="line">[INFO] Apache Hadoop Common ............................... SUCCESS [01:38 min]</span><br><span class="line">[INFO] Apache Hadoop NFS .................................. SUCCESS [  5.511 s]</span><br><span class="line">[INFO] Apache Hadoop KMS .................................. SUCCESS [ 10.173 s]</span><br><span class="line">[INFO] Apache Hadoop Common Project ....................... SUCCESS [  0.035 s]</span><br><span class="line">[INFO] Apache Hadoop HDFS ................................. SUCCESS [02:39 min]</span><br><span class="line">[INFO] Apache Hadoop HttpFS ............................... SUCCESS [ 22.498 s]</span><br><span class="line">[INFO] Apache Hadoop HDFS BookKeeper Journal .............. SUCCESS [  5.741 s]</span><br><span class="line">[INFO] Apache Hadoop HDFS-NFS ............................. SUCCESS [  4.335 s]</span><br><span class="line">[INFO] Apache Hadoop HDFS Project ......................... SUCCESS [  0.032 s]</span><br><span class="line">[INFO] hadoop-yarn ........................................ SUCCESS [  0.029 s]</span><br><span class="line">[INFO] hadoop-yarn-api .................................... SUCCESS [01:29 min]</span><br><span class="line">[INFO] hadoop-yarn-common ................................. SUCCESS [ 22.164 s]</span><br><span class="line">[INFO] hadoop-yarn-server ................................. SUCCESS [  0.068 s]</span><br><span class="line">[INFO] hadoop-yarn-server-common .......................... SUCCESS [  9.165 s]</span><br><span class="line">[INFO] hadoop-yarn-server-nodemanager ..................... SUCCESS [ 15.155 s]</span><br><span class="line">[INFO] hadoop-yarn-server-web-proxy ....................... SUCCESS [  2.871 s]</span><br><span class="line">[INFO] hadoop-yarn-server-applicationhistoryservice ....... SUCCESS [  5.563 s]</span><br><span class="line">[INFO] hadoop-yarn-server-resourcemanager ................. SUCCESS [ 16.326 s]</span><br><span class="line">[INFO] hadoop-yarn-server-tests ........................... SUCCESS [  0.938 s]</span><br><span class="line">[INFO] hadoop-yarn-client ................................. SUCCESS [  5.033 s]</span><br><span class="line">[INFO] hadoop-yarn-applications ........................... SUCCESS [  0.031 s]</span><br><span class="line">[INFO] hadoop-yarn-applications-distributedshell .......... SUCCESS [  2.431 s]</span><br><span class="line">[INFO] hadoop-yarn-applications-unmanaged-am-launcher ..... SUCCESS [  1.924 s]</span><br><span class="line">[INFO] hadoop-yarn-site ................................... SUCCESS [  0.035 s]</span><br><span class="line">[INFO] hadoop-yarn-registry ............................... SUCCESS [  4.713 s]</span><br><span class="line">[INFO] hadoop-yarn-project ................................ SUCCESS [  4.733 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client ............................ SUCCESS [  0.127 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-core ....................... SUCCESS [ 18.975 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-common ..................... SUCCESS [ 15.267 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-shuffle .................... SUCCESS [  3.622 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-app ........................ SUCCESS [  8.602 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-hs ......................... SUCCESS [  5.324 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-jobclient .................. SUCCESS [  5.407 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-hs-plugins ................. SUCCESS [  2.205 s]</span><br><span class="line">[INFO] hadoop-mapreduce-client-nativetask ................. SUCCESS [01:18 min]</span><br><span class="line">[INFO] Apache Hadoop MapReduce Examples ................... SUCCESS [  5.211 s]</span><br><span class="line">[INFO] hadoop-mapreduce ................................... SUCCESS [  4.746 s]</span><br><span class="line">[INFO] Apache Hadoop MapReduce Streaming .................. SUCCESS [  3.916 s]</span><br><span class="line">[INFO] Apache Hadoop Distributed Copy ..................... SUCCESS [  8.626 s]</span><br><span class="line">[INFO] Apache Hadoop Archives ............................. SUCCESS [  2.009 s]</span><br><span class="line">[INFO] Apache Hadoop Archive Logs ......................... SUCCESS [  1.768 s]</span><br><span class="line">[INFO] Apache Hadoop Rumen ................................ SUCCESS [  5.405 s]</span><br><span class="line">[INFO] Apache Hadoop Gridmix .............................. SUCCESS [  3.492 s]</span><br><span class="line">[INFO] Apache Hadoop Data Join ............................ SUCCESS [  2.596 s]</span><br><span class="line">[INFO] Apache Hadoop Ant Tasks ............................ SUCCESS [  2.154 s]</span><br><span class="line">[INFO] Apache Hadoop Extras ............................... SUCCESS [  2.846 s]</span><br><span class="line">[INFO] Apache Hadoop Pipes ................................ SUCCESS [  6.695 s]</span><br><span class="line">[INFO] Apache Hadoop OpenStack support .................... SUCCESS [  4.509 s]</span><br><span class="line">[INFO] Apache Hadoop Amazon Web Services support .......... SUCCESS [  5.607 s]</span><br><span class="line">[INFO] Apache Hadoop Azure support ........................ SUCCESS [  4.555 s]</span><br><span class="line">[INFO] Apache Hadoop Client ............................... SUCCESS [  4.481 s]</span><br><span class="line">[INFO] Apache Hadoop Mini-Cluster ......................... SUCCESS [  1.313 s]</span><br><span class="line">[INFO] Apache Hadoop Scheduler Load Simulator ............. SUCCESS [  3.897 s]</span><br><span class="line">[INFO] Apache Hadoop Tools Dist ........................... SUCCESS [  7.694 s]</span><br><span class="line">[INFO] Apache Hadoop Tools ................................ SUCCESS [  0.029 s]</span><br><span class="line">[INFO] Apache Hadoop Distribution ......................... SUCCESS [ 37.721 s]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD SUCCESS</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Total time: 12:51 min</span><br><span class="line">[INFO] Finished at: 2019-04-15T18:47:36+08:00</span><br><span class="line">[INFO] Final Memory: 251M/981M</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br></pre></td></tr></table></figure></p>
+<p>此时编译好的hadoop在/home/hadoop/source/hadoop-2.6.0-cdh5.7.0/hadoop-dist/target, 文件名为hadoop-2.6.0-cdh5.7.0.tar.gz</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Hadoop//" class="article-tag-list-link color2">Hadoop</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/16/hadoop_compile/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-nameService" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -428,6 +537,79 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/04/01/nameService/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-commonNodeLL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/24/commonNodeLL/">common node of LinkedList</a>
+    </h1>
+  
+
+        
+        <a href="/2019/03/24/commonNodeLL/" class="archive-article-date">
+  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Lintcode//" class="article-tag-list-link color4">Lintcode</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/03/24/commonNodeLL/">展开全文 >></a>
         </p>
       
 
@@ -515,79 +697,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/03/24/sql/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-commonNodeLL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/03/24/commonNodeLL/">common node of LinkedList</a>
-    </h1>
-  
-
-        
-        <a href="/2019/03/24/commonNodeLL/" class="archive-article-date">
-  	<time datetime="2019-03-25T05:23:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Lintcode//" class="article-tag-list-link color4">Lintcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/03/24/commonNodeLL/">展开全文 >></a>
         </p>
       
 
@@ -1083,87 +1192,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/01/05/mr/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hdfsWrite" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/04/hdfsWrite/">HDFS写流程</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/04/hdfsWrite/" class="archive-article-date">
-  	<time datetime="2019-01-04T18:11:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/img/hdfs/hdfsWrite.png" alt="avatar"></p>
-<p>1.写操作的职责<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将存储在linux上的文件放入HDFS上</span><br></pre></td></tr></table></figure></p>
-<p>2.写操作具体流程<br><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(1) client 调用Distributed file system的create方法, 其参数就是文件夹路径path, dfs.create(path)</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(2) 与NN进行RPC通信, 检查该path是否存在&amp;&amp;检查是否有权限创建文件</span><br><span class="line"><span class="code">    if(检查成功):</span></span><br><span class="line"><span class="code">        根据路径创建一个新文件，但不关联任何的block(意味着是空文件)</span></span><br><span class="line"><span class="code">        return FSDataOutputStream对象</span></span><br><span class="line"><span class="code">    else:</span></span><br><span class="line"><span class="code">        返回相应的错误信息</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(3) client调用FSDataOutputStream对象的write方法将第一个块写给DN1, DN1复制block给DN2, DN2复制block给DN3</span><br><span class="line"></span><br><span class="line"><span class="code">    都写完后, DN3返回ack给DN2, DN2收到ack packet返回ack给DN1, DN1收到ack packet返回ack给FSOutputStream对象</span></span><br><span class="line"></span><br><span class="line"><span class="code">    到此标志一个block的3个replica全部写完</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(4) 当文件内容全部写完, client调用FSDataOutputStream的close()方法, 关闭输出流, flush缓存区的数据包</span><br></pre></td></tr></table></figure>
-<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(5)调用Distributed file system的complete()方法, 告诉NN已经全部写完</span><br></pre></td></tr></table></figure>
-<p>3.注意事项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">写操作使用的是OutputStream</span><br></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/HDFS//" class="article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/04/hdfsWrite/">展开全文 >></a>
         </p>
       
 
